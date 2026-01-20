@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8o07dbui3got"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_cmreo"]
+
+[sub_resource type="Gradient" id="Gradient_cmreo"]
+colors = PackedColorArray(0, 0, 0, 1, 0.19434929, 0.19434926, 0.19434926, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a1kg1"]
+gradient = SubResource("Gradient_cmreo")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cmreo"]
+size = Vector2(1, 1.000001)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_cmreo"]
+cull_mode = 1
+polygon = PackedVector2Array(-5.027114, -49.99728, -4.972885, 50.002705, 5.027114, 49.99728, 4.972885, -50.002705)
+
+[node name="Wall" type="StaticBody2D"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+scale = Vector2(10, 100)
+mesh = SubResource("QuadMesh_cmreo")
+texture = SubResource("GradientTexture1D_a1kg1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.4901161e-07, 3.051758e-05)
+scale = Vector2(10, 100.00004)
+shape = SubResource("RectangleShape2D_cmreo")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+rotation = 0.00054228574
+occluder = SubResource("OccluderPolygon2D_cmreo")

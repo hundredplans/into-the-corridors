@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://cg7wegompkjwt"]
+
+[ext_resource type="Script" uid="uid://dv02qh08oskb7" path="res://scenes/enemies/finger_enemy/finger_enemy.gd" id="1_t731w"]
+[ext_resource type="Texture2D" uid="uid://cfstwdehru14p" path="res://assets/sprites/enemies/finger/finger_enemy.png" id="2_t731w"]
+[ext_resource type="AudioStream" uid="uid://dckp56iqnfctj" path="res://assets/sounds/creepy-laugh-2-401714.mp3" id="3_1vn4n"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1vn4n"]
+size = Vector2(13, 9)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t731w"]
+size = Vector2(13, 9)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jwi3d"]
+size = Vector2(13, 9)
+
+[node name="FingerEnemy" type="CharacterBody2D"]
+scale = Vector2(3, 3)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_t731w")
+stream = ExtResource("3_1vn4n")
+metadata/_custom_type_script = "uid://b07f8lm62gnkm"
+
+[node name="Fingers" type="Node2D" parent="."]
+scale = Vector2(0.2, 0.2)
+
+[node name="FingerSprite" type="Sprite2D" parent="Fingers"]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 1)
+rotation = 1.5707964
+texture = ExtResource("2_t731w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.5, -2.5)
+shape = SubResource("RectangleShape2D_1vn4n")
+
+[node name="FlashlightDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FlashlightDetector"]
+position = Vector2(1.5, -2.5)
+shape = SubResource("RectangleShape2D_t731w")
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
+position = Vector2(1.5, -2.5)
+shape = SubResource("RectangleShape2D_jwi3d")
+
+[node name="FlashlightEnteredTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+one_shot = true
+
+[connection signal="area_entered" from="FlashlightDetector" to="." method="onFlashlightEntered"]
+[connection signal="area_exited" from="FlashlightDetector" to="." method="onFlashlightExited"]
+[connection signal="area_entered" from="PlayerDetector" to="." method="onPlayerEntered"]
+[connection signal="timeout" from="FlashlightEnteredTimer" to="." method="onFlashlightEnteredTimerTimeout"]

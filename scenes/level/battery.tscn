@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://ivaclx0gucby"]
+
+[ext_resource type="Script" uid="uid://colc0vbeuvjyr" path="res://scenes/level/battery.gd" id="1_rn11o"]
+[ext_resource type="Texture2D" uid="uid://dorgrs1d45ibr" path="res://assets/sprites/flashlight/battery.png" id="2_rn11o"]
+[ext_resource type="AudioStream" uid="uid://dd051j0sjm0e" path="res://assets/sounds/high-battery-charge-421821.mp3" id="3_linj1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cse4x"]
+size = Vector2(26, 10)
+
+[node name="Battery" type="Node2D"]
+script = ExtResource("1_rn11o")
+stream = ExtResource("3_linj1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5707964
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_rn11o")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_cse4x")

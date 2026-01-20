@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=3 uid="uid://bdxn8lwyregqf"]
+
+[ext_resource type="Script" uid="uid://dnlxe4i556maq" path="res://scenes/flashlight_minigame/flashlight_minigame.gd" id="1_t4hsv"]
+[ext_resource type="Texture2D" uid="uid://biuti3gir08e" path="res://assets/sprites/flashlight/flashlight.png" id="2_t4hsv"]
+[ext_resource type="Texture2D" uid="uid://dorgrs1d45ibr" path="res://assets/sprites/flashlight/battery.png" id="3_fmoja"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t4hsv"]
+size = Vector2(18, 18.25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fmoja"]
+size = Vector2(18, 48)
+
+[sub_resource type="LabelSettings" id="LabelSettings_t4hsv"]
+font_size = 64
+outline_size = 16
+outline_color = Color(0, 0, 0, 1)
+
+[node name="FlashlightMinigame" type="Node2D"]
+script = ExtResource("1_t4hsv")
+
+[node name="Flashlight" type="Sprite2D" parent="."]
+position = Vector2(561, 304)
+rotation = 1.5707964
+scale = Vector2(2, 2)
+texture = ExtResource("2_t4hsv")
+
+[node name="Area2D" type="Area2D" parent="Flashlight"]
+collision_layer = 0
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Flashlight/Area2D"]
+position = Vector2(-5, 16.125)
+shape = SubResource("RectangleShape2D_t4hsv")
+
+[node name="BatterySprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+z_index = 5
+position = Vector2(829, 166)
+rotation = 1.5707964
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_fmoja")
+
+[node name="Area2D" type="Area2D" parent="BatterySprite"]
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BatterySprite/Area2D"]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_fmoja")
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(0, 1, 0.20000005, 1)
+offset_left = 512.0
+offset_top = 297.0
+offset_right = 552.0
+offset_bottom = 385.0
+text = "^"
+label_settings = SubResource("LabelSettings_t4hsv")
+
+[connection signal="area_entered" from="Flashlight/Area2D" to="." method="onEnteredFlashlightArea"]
+[connection signal="area_exited" from="Flashlight/Area2D" to="." method="onExitedFlashlightArea"]
+[connection signal="mouse_entered" from="BatterySprite/Area2D" to="." method="onMouseEnteredBattery"]
+[connection signal="mouse_exited" from="BatterySprite/Area2D" to="." method="onMouseExitedBattery"]

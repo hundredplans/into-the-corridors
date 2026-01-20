@@ -1,0 +1,182 @@
+[gd_scene load_steps=10 format=3 uid="uid://m2mlvg3oqlgy"]
+
+[ext_resource type="PackedScene" uid="uid://cb0xgafeuyt3c" path="res://scenes/level/level.tscn" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://jg8c2ug44eov" path="res://scenes/main/main.gd" id="1_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bdxn8lwyregqf" path="res://scenes/flashlight_minigame/flashlight_minigame.tscn" id="3_1bvp3"]
+[ext_resource type="Script" uid="uid://30padqkcjmke" path="res://scenes/main/ui.gd" id="4_1bvp3"]
+[ext_resource type="AudioStream" uid="uid://m4l6gtwr5xua" path="res://assets/sounds/hellx27s-kitchen-violin-423655.mp3" id="4_ow5a4"]
+[ext_resource type="AudioStream" uid="uid://i3gdq2aflc7o" path="res://assets/sounds/creepy-laugh-97997.mp3" id="5_6q06x"]
+[ext_resource type="AudioStream" uid="uid://d34trcd4tkr1i" path="res://assets/sounds/endgame/victory.mp3" id="5_yyfjg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1bvp3"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_lquwl"]
+font_size = 256
+outline_size = 32
+outline_color = Color(0.39215687, 0, 0, 1)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_h2yge")
+win_color = Color(0.8039216, 0.41960785, 0, 1)
+LevelPacked = ExtResource("1_0xm2m")
+stream_one = ExtResource("5_6q06x")
+stream_two = ExtResource("4_ow5a4")
+win_stream = ExtResource("5_yyfjg")
+
+[node name="2D" type="Node2D" parent="."]
+
+[node name="LevelCanvasModulate" type="CanvasModulate" parent="2D"]
+unique_name_in_owner = true
+color = Color(0, 0, 0, 1)
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="2D"]
+
+[node name="CanvasModulate2" type="CanvasModulate" parent="2D/CanvasLayer2"]
+
+[node name="FlashlightMinigame" parent="2D/CanvasLayer2/CanvasModulate2" instance=ExtResource("3_1bvp3")]
+unique_name_in_owner = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UIManager" type="Control" parent="CanvasLayer"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_1bvp3")
+
+[node name="RefillFlashlightUI" type="Control" parent="CanvasLayer/UIManager"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/UIManager/RefillFlashlightUI"]
+layout_mode = 0
+offset_left = 225.0
+offset_top = 23.0
+offset_right = 850.0
+offset_bottom = 68.0
+text = "Drag the battery to the flashlight quickly"
+label_settings = SubResource("LabelSettings_1bvp3")
+
+[node name="StartScreen" type="Control" parent="CanvasLayer/UIManager"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="SurviveLabel" type="Label" parent="CanvasLayer/UIManager/StartScreen"]
+unique_name_in_owner = true
+modulate = Color(0.6, 0.21568628, 0.21568628, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Survive"
+label_settings = SubResource("LabelSettings_lquwl")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WinScreen" type="Control" parent="CanvasLayer/UIManager"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/UIManager/WinScreen"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/normal_font_size = 128
+bbcode_enabled = true
+text = "[wave amp=50.0 freq=5.0 connected=1]You Won![/wave]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/UIManager/WinScreen"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -116.0
+offset_top = -152.0
+offset_right = 116.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 64
+text = "Restart"
+
+[node name="LostScreen" type="Control" parent="CanvasLayer/UIManager"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/UIManager/LostScreen"]
+modulate = Color(0.5, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/normal_font_size = 128
+bbcode_enabled = true
+text = "[pulse freq=2.0 color=#ffffffba ease=-2.0]You LOST[/pulse]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/UIManager/LostScreen"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -116.0
+offset_top = -152.0
+offset_right = 116.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 64
+text = "Restart"
+
+[connection signal="battery_collected" from="2D/CanvasLayer2/CanvasModulate2/FlashlightMinigame" to="." method="onBatteryCollected"]
+[connection signal="pressed" from="CanvasLayer/UIManager/WinScreen/RestartButton" to="." method="onRestartButtonPressed"]
+[connection signal="pressed" from="CanvasLayer/UIManager/LostScreen/RestartButton" to="." method="onRestartButtonPressed"]

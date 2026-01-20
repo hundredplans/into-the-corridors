@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://b7uvl3lbj4iq4"]
+
+[ext_resource type="Script" uid="uid://ddgvlhtssw3ae" path="res://scenes/enemies/sneaky_enemy/sneaky_enemy.gd" id="1_l3xij"]
+[ext_resource type="Texture2D" uid="uid://dybswp2vh1o40" path="res://assets/sprites/enemies/sneaker/sneaky_enemy.png" id="2_l3xij"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l3xij"]
+size = Vector2(75, 85)
+
+[node name="SneakyEnemy" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_l3xij")
+metadata/_custom_type_script = "uid://b07f8lm62gnkm"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_l3xij")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(6.5, -2.5)
+shape = SubResource("RectangleShape2D_l3xij")

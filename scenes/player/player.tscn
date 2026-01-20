@@ -1,0 +1,86 @@
+[gd_scene load_steps=9 format=3 uid="uid://dgxjya0h8sdij"]
+
+[ext_resource type="Script" uid="uid://br7ahe1ak0k2f" path="res://scenes/player/player.gd" id="1_dovo2"]
+[ext_resource type="Texture2D" uid="uid://b257cjoq67fhk" path="res://assets/sprites/player/character_idle.png" id="2_lvxji"]
+[ext_resource type="Texture2D" uid="uid://deflb17so4rj0" path="res://assets/sprites/player/character_walk_1.png" id="3_75vfm"]
+[ext_resource type="Texture2D" uid="uid://c36lilvqcatns" path="res://assets/sprites/lights/lightcone.jpg" id="3_gmlin"]
+[ext_resource type="Texture2D" uid="uid://k8cfu5b5xpk3" path="res://assets/sprites/player/character_walk_2.png" id="4_0owmy"]
+[ext_resource type="Texture2D" uid="uid://c2ycrpobb8pid" path="res://assets/sprites/lights/radial_light.png" id="4_lvxji"]
+[ext_resource type="AudioStream" uid="uid://cld6c5llguh6k" path="res://assets/sounds/walking-on-concrete-ver-2-268513.mp3" id="5_0owmy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
+size = Vector2(17, 20)
+
+[node name="Player" type="CharacterBody2D"]
+z_index = 10
+collision_mask = 2
+script = ExtResource("1_dovo2")
+flashlight_expire_time = 30.0
+speed = 100.0
+camera_final_zoom = 1.0
+idle_frame = ExtResource("2_lvxji")
+walk_frames = Array[Texture2D]([ExtResource("3_75vfm"), ExtResource("4_0owmy")])
+walk_stream = ExtResource("5_0owmy")
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_lvxji")
+
+[node name="MyCamera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+zoom = Vector2(3, 3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3.5, 1)
+shape = SubResource("RectangleShape2D_dovo2")
+
+[node name="CenterLight" type="PointLight2D" parent="."]
+unique_name_in_owner = true
+shadow_enabled = true
+texture = ExtResource("4_lvxji")
+texture_scale = 0.2
+
+[node name="FlashlightTurner" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Flashlight" type="PointLight2D" parent="FlashlightTurner"]
+unique_name_in_owner = true
+position = Vector2(-5, -7)
+shadow_enabled = true
+texture = ExtResource("3_gmlin")
+offset = Vector2(0, 340)
+
+[node name="FlashlightArea" type="Area2D" parent="FlashlightTurner"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="FlashlightTurner/FlashlightArea"]
+polygon = PackedVector2Array(-1, 30, -74, 194, 73, 192)
+
+[node name="BatteryDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BatteryDetector"]
+position = Vector2(-4, 1)
+shape = SubResource("RectangleShape2D_dovo2")
+
+[node name="EnemyDetector" type="Area2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
+position = Vector2(-3.5, 1)
+shape = SubResource("RectangleShape2D_dovo2")
+
+[node name="FlashlightTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("5_0owmy")
+volume_db = 6.0
+
+[connection signal="area_entered" from="BatteryDetector" to="." method="onBatteryDetectorAreaEntered"]
+[connection signal="timeout" from="FlashlightTimer" to="." method="onFlashlightTimerTimeout"]

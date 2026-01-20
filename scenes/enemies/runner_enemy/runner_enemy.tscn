@@ -1,0 +1,61 @@
+[gd_scene load_steps=11 format=3 uid="uid://dfequamdirskt"]
+
+[ext_resource type="Script" uid="uid://envehorhnd5e" path="res://scenes/enemies/runner_enemy/runner_enemy.gd" id="1_whrt7"]
+[ext_resource type="Texture2D" uid="uid://bhom3jpmc0rr3" path="res://assets/sprites/enemies/runner/runner_idle.png" id="2_raoks"]
+[ext_resource type="Texture2D" uid="uid://resl7wbgukx6" path="res://assets/sprites/enemies/runner/runner_walk_1.png" id="3_putld"]
+[ext_resource type="Texture2D" uid="uid://cjo0bs6lxrtdo" path="res://assets/sprites/enemies/runner/runner_walk_2.png" id="4_wchfm"]
+[ext_resource type="AudioStream" uid="uid://bj6jp6c0dfs2o" path="res://assets/sounds/explosion-ambiance-45472.mp3" id="5_wchfm"]
+[ext_resource type="AudioStream" uid="uid://bwq3hijidhya2" path="res://assets/sounds/creepy-fall-329227.mp3" id="6_w8e62"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x5ire"]
+size = Vector2(19, 43)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_putld"]
+size = Vector2(24, 47)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_whrt7"]
+radius = 155.62
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_raoks"]
+polygon = PackedVector2Array(-8, -15, -21, -3, -22, 13, -15, 23, 7, 24, 20, 14, 19, 1, 7, -14)
+
+[node name="RunnerEnemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 6
+script = ExtResource("1_whrt7")
+speed = 60.0
+idle_frame = ExtResource("2_raoks")
+walk_frames = Array[Texture2D]([ExtResource("3_putld"), ExtResource("4_wchfm")])
+stream = ExtResource("5_wchfm")
+end_stream = ExtResource("6_w8e62")
+
+[node name="RunnerSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_raoks")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.5, -2.5)
+shape = SubResource("RectangleShape2D_x5ire")
+
+[node name="PlayerCollisionArea" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCollisionArea"]
+position = Vector2(-3, -2.5)
+shape = SubResource("RectangleShape2D_putld")
+
+[node name="PlayerDetectorArea" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetectorArea"]
+shape = SubResource("CircleShape2D_whrt7")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+visible = false
+occluder = SubResource("OccluderPolygon2D_raoks")
+
+[connection signal="area_entered" from="PlayerCollisionArea" to="." method="onLost"]
+[connection signal="area_entered" from="PlayerDetectorArea" to="." method="onPlayerEntered"]
+[connection signal="area_exited" from="PlayerDetectorArea" to="." method="onPlayerExited"]
